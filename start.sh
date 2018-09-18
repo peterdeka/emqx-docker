@@ -8,8 +8,8 @@ if [[ ! -z "$DEBUG" ]]; then
 fi
 
 ## Local IP address setting
-
-LOCAL_IP=$(hostname -i |grep -E -oh '((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])'|head -n 1)
+##we geth eth0 otherwise when containerized with weave we get a useless ip and emqtt fails to start
+LOCAL_IP=$(ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
 
 ## EMQ Base settings and plugins setting
 # Base settings in /opt/emqttd/etc/emq.conf
